@@ -435,6 +435,7 @@ export default function KMCOREDECORELanding() {
   const [scrolled, setScrolled] = useState(false)
   const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [openFaq, setOpenFaq] = useState(0)
+  const [lightbox, setLightbox] = useState(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -445,6 +446,12 @@ export default function KMCOREDECORELanding() {
   useEffect(() => {
     const id = setInterval(() => setActiveTestimonial((p) => (p + 1) % TESTIMONIALS.length), 6000)
     return () => clearInterval(id)
+  }, [])
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') setLightbox(null) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
   }, [])
 
   return (
@@ -458,36 +465,51 @@ export default function KMCOREDECORELanding() {
 
       <main>
         {/* ════════ HERO ════════ */}
-        <section id="studio" className="relative h-screen min-h-[640px] flex items-center justify-center overflow-hidden">
+{/* ════════ HERO (UPGRADED) ════════ */}
+        <section id="studio" className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0">
+            {/* Subtle scale for a more dynamic, immersive feel */}
             <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&q=90"
               alt="KM Core & Decor luxury interior design and civil construction showcase"
-              className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/35 to-black/70" />
+              className="w-full h-full object-cover transform scale-105" />
+            {/* Smoother, richer gradient for text legibility */}
+            <div className="absolute inset-0 bg-gradient-to-b from-stone-900/80 via-stone-900/40 to-stone-900/90" />
           </div>
 
-          <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-12 text-center pt-20">
-            <span className="inline-block font-sans text-[11px] tracking-[0.3em] uppercase text-white/70 mb-8 border-b border-white/30 pb-2">
-              Civil Construction &amp; Interior Design · Vadodara
-            </span>
+          <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-12 text-center pt-20">
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <div className="w-8 h-px bg-white/40" />
+              <span className="font-sans text-[10px] tracking-[0.4em] uppercase text-white/80">
+                Vadodara's Premier Studio
+              </span>
+              <div className="w-8 h-px bg-white/40" />
+            </div>
 
-            <h1 className="font-serif text-[clamp(2.8rem,7vw,5.5rem)] leading-[1.1] text-white mb-10 font-light">
+            <h1 className="font-serif text-[clamp(3rem,8vw,6.5rem)] leading-[1.05] text-white mb-8 font-light drop-shadow-lg">
               Elevating Spaces,<br />
               <span className="italic" style={{ color: '#d4c4a8' }}>Enriching Lives.</span>
             </h1>
 
-            <p className="font-sans text-base lg:text-lg text-white/80 max-w-2xl mx-auto mb-12 leading-relaxed font-light">
-              KM Core &amp; Decor is a Vadodara-based studio crafting refined residential and commercial interiors and dependable civil construction — delivered as seamless turnkey projects with premium materials and obsessive attention to detail.
+            <p className="font-sans text-base lg:text-lg text-white/80 max-w-2xl mx-auto mb-14 leading-relaxed font-light">
+              Crafting refined residential and commercial interiors with dependable civil construction. Delivered as seamless turnkey projects with premium materials and obsessive attention to detail.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-              <a href="#contact" className="font-sans text-xs tracking-[0.2em] uppercase text-stone-900 bg-white px-8 py-4 hover:bg-stone-100 transition-all duration-300 shadow-lg">
-                Start Your Project
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+              <a href="#contact" className="group relative overflow-hidden font-sans text-xs tracking-[0.2em] uppercase text-stone-900 bg-white px-10 py-5 transition-all duration-300">
+                <span className="relative z-10">Start Your Project</span>
+                <div className="absolute inset-0 bg-stone-200 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               </a>
-              <a href="#projects" className="font-sans text-xs tracking-[0.2em] uppercase text-white border border-white/40 px-8 py-4 hover:border-white hover:bg-white/10 transition-all duration-300">
+              <a href="#projects" className="group font-sans text-xs tracking-[0.2em] uppercase text-white px-10 py-5 flex items-center gap-3 border border-transparent hover:border-white/30 transition-all duration-300">
                 View Our Work
+                <svg className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
               </a>
             </div>
+          </div>
+
+          {/* Elegant Scroll Indicator */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-70 animate-bounce">
+            <span className="font-sans text-[9px] tracking-[0.3em] uppercase text-white">Scroll</span>
+            <div className="w-px h-12 bg-gradient-to-b from-white to-transparent" />
           </div>
         </section>
 
@@ -504,31 +526,40 @@ export default function KMCOREDECORELanding() {
         </section>
 
         {/* ════════ SERVICES ════════ */}
-        <section id="services" className="bg-white py-28 lg:py-32 px-6 lg:px-12">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-16 lg:mb-20 max-w-3xl">
+       {/* ════════ SERVICES (UPGRADED) ════════ */}
+        <section id="services" className="bg-stone-50 py-28 lg:py-40 px-6 lg:px-12 relative overflow-hidden">
+          {/* Subtle background ambient blur */}
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-stone-200/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+
+          <div className="max-w-7xl mx-auto relative z-10">
+            <div className="mb-20 max-w-3xl">
               <SectionLabel>Our Expertise</SectionLabel>
-              <h2 className="font-serif text-[clamp(2.2rem,4.5vw,3.5rem)] leading-[1.1] text-stone-900 font-light mb-5">
-                Comprehensive construction &amp; design services.
+              <h2 className="font-serif text-[clamp(2.5rem,5vw,4rem)] leading-[1.1] text-stone-900 font-light mb-6">
+                Comprehensive construction &amp; design.
               </h2>
-              <p className="font-sans text-base text-stone-500 leading-relaxed font-light max-w-xl">
-                Six core capabilities that take your project from an empty plot or tired room to a finished, beautiful space.
+              <p className="font-sans text-base text-stone-600 leading-relaxed font-light max-w-xl">
+                Six core capabilities that seamlessly take your project from an empty plot or tired room to a flawlessly finished, beautiful space.
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-stone-200 border border-stone-200">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {SERVICES.map((s) => (
-                <article key={s.index} className="group bg-white p-8 lg:p-10 transition-colors duration-300 hover:bg-stone-50 cursor-pointer">
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="font-serif text-5xl font-light" style={{ color: '#e7e5e4' }}>{s.index}</span>
-                    <span className="w-12 h-12 rounded-full bg-stone-50 border border-stone-100 flex items-center justify-center text-stone-400 group-hover:border-stone-300 transition-colors" style={{ color: BRONZE }}>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.3} viewBox="0 0 24 24">
+                <article key={s.index} className="group bg-white rounded-2xl p-10 lg:p-12 border border-stone-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer flex flex-col h-full">
+                  <div className="flex items-start justify-between mb-12">
+                    <span className="w-14 h-14 rounded-full bg-stone-50 flex items-center justify-center text-stone-400 group-hover:bg-stone-900 group-hover:text-white transition-colors duration-500">
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={1.2} viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" d={s.icon} />
                       </svg>
                     </span>
+                    <span className="font-sans text-sm tracking-widest text-stone-300 group-hover:text-stone-900 transition-colors duration-500 font-medium">
+                      {s.index}
+                    </span>
                   </div>
-                  <h3 className="font-serif text-xl lg:text-2xl text-stone-900 mb-3 font-light">{s.title}</h3>
-                  <p className="font-sans text-sm text-stone-600 leading-relaxed font-light">{s.desc}</p>
+                  <h3 className="font-serif text-2xl text-stone-900 mb-4 group-hover:text-stone-700 transition-colors">{s.title}</h3>
+                  <p className="font-sans text-sm text-stone-500 leading-relaxed font-light group-hover:text-stone-600 transition-colors flex-grow">{s.desc}</p>
+
+                  {/* Animated hover line */}
+                  <div className="w-0 h-px bg-stone-900 mt-8 group-hover:w-full transition-all duration-700 ease-out" />
                 </article>
               ))}
             </div>
@@ -569,26 +600,27 @@ export default function KMCOREDECORELanding() {
         </section>
 
         {/* ════════ PROCESS ════════ */}
-        <section id="process" className="bg-white py-28 lg:py-32 px-6 lg:px-12 border-t border-stone-200">
+      {/* ════════ PROCESS (UPGRADED) ════════ */}
+        <section id="process" className="bg-white py-28 lg:py-40 px-6 lg:px-12 border-t border-stone-100">
           <div className="max-w-7xl mx-auto">
-            <div className="mb-16 lg:mb-20 max-w-2xl">
-              <SectionLabel>How We Work</SectionLabel>
-              <h2 className="font-serif text-[clamp(2.2rem,4.5vw,3.5rem)] leading-[1.1] text-stone-900 font-light">
-                A clear, collaborative process.
+            <div className="mb-24 text-center max-w-3xl mx-auto flex flex-col items-center">
+              <SectionLabel className="justify-center">How We Work</SectionLabel>
+              <h2 className="font-serif text-[clamp(2.5rem,5vw,4rem)] leading-[1.1] text-stone-900 font-light mt-5">
+                A seamless, transparent journey.
               </h2>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
-              {PROCESS_STEPS.map((step, i) => (
-                <div key={step.n} className="relative">
-                  <div className="flex items-center gap-4 mb-5">
-                    <span className="font-serif text-4xl font-light" style={{ color: BRONZE }}>{step.n}</span>
-                    {i < PROCESS_STEPS.length - 1 && (
-                      <div className="flex-1 h-px bg-stone-200 hidden lg:block" />
-                    )}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 relative">
+              {/* Continuous timeline line for desktop */}
+              <div className="hidden lg:block absolute top-8 left-6 right-6 h-px bg-stone-100 -z-10" />
+
+              {PROCESS_STEPS.map((step) => (
+                <div key={step.n} className="relative group flex flex-col items-center lg:items-start text-center lg:text-left">
+                  <div className="w-16 h-16 rounded-full bg-white border border-stone-200 flex items-center justify-center mb-8 shadow-sm group-hover:border-stone-900 group-hover:scale-110 transition-all duration-500 z-10">
+                    <span className="font-serif text-xl" style={{ color: BRONZE }}>{step.n}</span>
                   </div>
-                  <h3 className="font-serif text-xl text-stone-900 mb-3 font-light">{step.title}</h3>
-                  <p className="font-sans text-sm text-stone-600 leading-relaxed font-light">{step.desc}</p>
+                  <h3 className="font-serif text-2xl text-stone-900 mb-4">{step.title}</h3>
+                  <p className="font-sans text-sm text-stone-500 leading-relaxed font-light">{step.desc}</p>
                 </div>
               ))}
             </div>
@@ -650,6 +682,98 @@ export default function KMCOREDECORELanding() {
           </div>
         </section>
 
+        {/* ════════ FOUNDERS ════════ */}
+        <section id="founders" className="bg-stone-50 py-28 lg:py-40 px-6 lg:px-12 border-t border-stone-200">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-20 max-w-2xl">
+              <SectionLabel>Leadership</SectionLabel>
+              <h2 className="font-serif text-[clamp(2.2rem,4.5vw,3.5rem)] leading-[1.1] text-stone-900 font-light mb-6">
+                The visionaries behind the craft.
+              </h2>
+              <p className="font-sans text-base text-stone-600 leading-relaxed font-light">
+                Guided by expertise and a passion for transformative design, our founders bring decades of combined experience in construction management, aesthetic sensibility, and operational excellence.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+              {/* Founder 1: Kartavya */}
+              <div className="group relative flex flex-col sm:flex-row gap-8 items-start">
+                <button
+                  type="button"
+                  aria-label="View Dr Kartavya Mandot's portrait"
+                  className="relative w-full sm:w-2/5 aspect-[3/4] overflow-hidden cursor-pointer shadow-lg"
+                  onClick={() => setLightbox('/founders/kartavya.jpeg')}
+                >
+                  <img
+                    src="/founders/kartavya.jpeg"
+                    alt=""
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 border border-black/10 pointer-events-none" />
+                </button>
+                <div className="flex-1 pt-2 sm:pt-8">
+                  <span className="font-sans text-[10px] tracking-[0.2em] uppercase mb-3 block" style={{ color: BRONZE }}>
+                    Founder & Principal
+                  </span>
+                  <h3 className="font-serif text-3xl text-stone-900 mb-4">Dr. Kartavya Mandot</h3>
+                  <p className="font-sans text-sm text-stone-500 leading-relaxed">
+                    Holding a PhD in Construction Management, Kartavya brings unparalleled technical precision and structural insight to every project. He personally oversees design and execution, ensuring every space isn't just beautiful, but built to last generations.
+                  </p>
+                </div>
+              </div>
+
+              {/* Founder 2: Khushboo */}
+              <div className="group relative flex flex-col sm:flex-row-reverse gap-8 items-start lg:mt-32">
+                <button
+                  type="button"
+                  aria-label="View Khushboo Mandot's portrait"
+                  className="relative w-full sm:w-2/5 aspect-[3/4] overflow-hidden cursor-pointer shadow-lg"
+                  onClick={() => setLightbox('/founders/khushboo.jpeg')}
+                >
+                  <img
+                    src="/founders/khushboo.jpeg"
+                    alt=""
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 border border-black/10 pointer-events-none" />
+                </button>
+                <div className="flex-1 pt-2 sm:pt-8 sm:text-right">
+                  <span className="font-sans text-[10px] tracking-[0.2em] uppercase mb-3 block" style={{ color: BRONZE }}>
+                    Co-founder & Operations
+                  </span>
+                  <h3 className="font-serif text-3xl text-stone-900 mb-4">Khushboo Mandot</h3>
+                  <p className="font-sans text-sm text-stone-500 leading-relaxed">
+                    The backbone of studio operations. Khushboo orchestrates the complex logistics of turnkey delivery, ensuring flawless coordination between trades.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Lightbox overlay */}
+          {lightbox && (
+            <div
+              className="fixed inset-0 z-50 bg-stone-900/95 backdrop-blur-sm flex items-center justify-center p-6 transition-all duration-300"
+              onClick={() => setLightbox(null)}
+            >
+              <div className="relative max-w-2xl w-full" onClick={(e) => e.stopPropagation()}>
+                <button
+                  onClick={() => setLightbox(null)}
+                  className="absolute -top-12 right-0 text-white/70 hover:text-white font-sans text-sm tracking-[0.1em] uppercase transition-colors"
+                >
+                  Close [×]
+                </button>
+                <img
+                  src={lightbox}
+                  alt="Founder portrait"
+                  className="w-full h-auto shadow-2xl"
+                />
+              </div>
+            </div>
+          )}
+        </section>
         {/* ════════ FAQ (AEO optimized) ════════ */}
         <section id="faq" className="bg-stone-50 py-24 lg:py-28 px-6 lg:px-12 border-t border-stone-200">
           <div className="max-w-3xl mx-auto">
